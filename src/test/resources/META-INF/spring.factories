@@ -1,0 +1,2 @@
+org.springframework.test.context.ContextCustomizerFactory = atig.recruiting.\
+    beta.config.SqlTestContainersSpringContextCustomizerFactory
