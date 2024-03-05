@@ -1,0 +1,361 @@
+<div>
+  <h2 id="page-heading" data-cy="CandidateHeading">
+    <span>Candidates</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-candidate"
+        [routerLink]="['/candidate/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Candidate</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (candidates?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Candidates found</span>
+    </div>
+  }
+
+  @if (candidates && candidates.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="firstName">
+              <div class="d-flex">
+                <span>First Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastName">
+              <div class="d-flex">
+                <span>Last Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="photo">
+              <div class="d-flex">
+                <span>Photo</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="profession">
+              <div class="d-flex">
+                <span>Profession</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nbExperience">
+              <div class="d-flex">
+                <span>Nb Experience</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="personalEmail">
+              <div class="d-flex">
+                <span>Personal Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="additionalInfos.id">
+              <div class="d-flex">
+                <span>Additional Infos</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidateCategory.id">
+              <div class="d-flex">
+                <span>Candidate Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidateSubCategory.id">
+              <div class="d-flex">
+                <span>Candidate Sub Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidateProcess.id">
+              <div class="d-flex">
+                <span>Candidate Process</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidateProcessStep.id">
+              <div class="d-flex">
+                <span>Candidate Process Step</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="category.id">
+              <div class="d-flex">
+                <span>Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="subCategory.id">
+              <div class="d-flex">
+                <span>Sub Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="process.id">
+              <div class="d-flex">
+                <span>Process</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="processStep.id">
+              <div class="d-flex">
+                <span>Process Step</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (candidate of candidates; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/candidate', candidate.id, 'view']">{{ candidate.id }}</a>
+              </td>
+              <td>{{ candidate.firstName }}</td>
+              <td>{{ candidate.lastName }}</td>
+              <td>
+                @if (candidate.photo) {
+                  <a (click)="openFile(candidate.photo, candidate.photoContentType)">
+                    <img
+                      [src]="'data:' + candidate.photoContentType + ';base64,' + candidate.photo"
+                      style="max-height: 30px"
+                      alt="candidate image"
+                    />
+                  </a>
+                  <span>{{ candidate.photoContentType }}, {{ byteSize(candidate.photo) }}</span>
+                }
+              </td>
+              <td>{{ candidate.profession }}</td>
+              <td>{{ candidate.nbExperience }}</td>
+              <td>{{ candidate.personalEmail }}</td>
+              <td>
+                @if (candidate.additionalInfos) {
+                  <div>
+                    <a [routerLink]="['/candidate-additional-infos', candidate.additionalInfos.id, 'view']">{{
+                      candidate.additionalInfos.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.candidateCategory) {
+                  <div>
+                    <a [routerLink]="['/category', candidate.candidateCategory.id, 'view']">{{ candidate.candidateCategory.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.candidateSubCategory) {
+                  <div>
+                    <a [routerLink]="['/sub-category', candidate.candidateSubCategory.id, 'view']">{{
+                      candidate.candidateSubCategory.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.candidateProcess) {
+                  <div>
+                    <a [routerLink]="['/process', candidate.candidateProcess.id, 'view']">{{ candidate.candidateProcess.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.candidateProcessStep) {
+                  <div>
+                    <a [routerLink]="['/process-step', candidate.candidateProcessStep.id, 'view']">{{
+                      candidate.candidateProcessStep.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.category) {
+                  <div>
+                    <a [routerLink]="['/category', candidate.category.id, 'view']">{{ candidate.category.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.subCategory) {
+                  <div>
+                    <a [routerLink]="['/sub-category', candidate.subCategory.id, 'view']">{{ candidate.subCategory.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.process) {
+                  <div>
+                    <a [routerLink]="['/process', candidate.process.id, 'view']">{{ candidate.process.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (candidate.processStep) {
+                  <div>
+                    <a [routerLink]="['/process-step', candidate.processStep.id, 'view']">{{ candidate.processStep.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/experience']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Experience</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/education']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Education</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/certification']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Certification</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/skill']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Skill</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/language']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Language</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/notification']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Notification</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/note']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Note</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/email']"
+                    [queryParams]="{ 'filter[candidateId.in]': candidate.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Email</span>
+                  </button>
+                  <a [routerLink]="['/candidate', candidate.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/candidate', candidate.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(candidate)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (candidates && candidates.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,312 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-candidate-heading" data-cy="CandidateCreateUpdateHeading">Create or edit a Candidate</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_firstName">First Name</label>
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+          @if (editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)) {
+            <div>
+              @if (editForm.get('firstName')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastName">Last Name</label>
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+          @if (editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)) {
+            <div>
+              @if (editForm.get('lastName')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_photo">Photo</label>
+          <div>
+            @if (editForm.get('photo')!.value) {
+              <img
+                [src]="'data:' + editForm.get('photoContentType')!.value + ';base64,' + editForm.get('photo')!.value"
+                style="max-height: 100px"
+                alt="candidate image"
+              />
+            }
+            @if (editForm.get('photo')!.value) {
+              <div class="form-text text-danger clearfix">
+                <span class="pull-start">{{ editForm.get('photoContentType')!.value }}, {{ byteSize(editForm.get('photo')!.value!) }}</span>
+                <button
+                  type="button"
+                  (click)="clearInputImage('photo', 'photoContentType', 'file_photo')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input type="file" id="file_photo" data-cy="photo" (change)="setFileData($event, 'photo', true)" accept="image/*" />
+          </div>
+          <input type="hidden" class="form-control" name="photo" id="field_photo" data-cy="photo" formControlName="photo" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="photoContentType"
+            id="field_photoContentType"
+            formControlName="photoContentType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_profession">Profession</label>
+          <input
+            type="text"
+            class="form-control"
+            name="profession"
+            id="field_profession"
+            data-cy="profession"
+            formControlName="profession"
+          />
+          @if (editForm.get('profession')!.invalid && (editForm.get('profession')!.dirty || editForm.get('profession')!.touched)) {
+            <div>
+              @if (editForm.get('profession')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nbExperience">Nb Experience</label>
+          <input
+            type="number"
+            class="form-control"
+            name="nbExperience"
+            id="field_nbExperience"
+            data-cy="nbExperience"
+            formControlName="nbExperience"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_personalEmail">Personal Email</label>
+          <input
+            type="text"
+            class="form-control"
+            name="personalEmail"
+            id="field_personalEmail"
+            data-cy="personalEmail"
+            formControlName="personalEmail"
+          />
+          @if (editForm.get('personalEmail')!.invalid && (editForm.get('personalEmail')!.dirty || editForm.get('personalEmail')!.touched)) {
+            <div>
+              @if (editForm.get('personalEmail')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_additionalInfos">Additional Infos</label>
+          <select
+            class="form-control"
+            id="field_additionalInfos"
+            data-cy="additionalInfos"
+            name="additionalInfos"
+            formControlName="additionalInfos"
+            [compareWith]="compareCandidateAdditionalInfos"
+          >
+            <option [ngValue]="null"></option>
+            @for (candidateAdditionalInfosOption of additionalInfosCollection; track $index) {
+              <option [ngValue]="candidateAdditionalInfosOption">{{ candidateAdditionalInfosOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidateCategory">Candidate Category</label>
+          <select
+            class="form-control"
+            id="field_candidateCategory"
+            data-cy="candidateCategory"
+            name="candidateCategory"
+            formControlName="candidateCategory"
+            [compareWith]="compareCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (categoryOption of categoriesSharedCollection; track $index) {
+              <option [ngValue]="categoryOption">{{ categoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidateSubCategory">Candidate Sub Category</label>
+          <select
+            class="form-control"
+            id="field_candidateSubCategory"
+            data-cy="candidateSubCategory"
+            name="candidateSubCategory"
+            formControlName="candidateSubCategory"
+            [compareWith]="compareSubCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (subCategoryOption of subCategoriesSharedCollection; track $index) {
+              <option [ngValue]="subCategoryOption">{{ subCategoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidateProcess">Candidate Process</label>
+          <select
+            class="form-control"
+            id="field_candidateProcess"
+            data-cy="candidateProcess"
+            name="candidateProcess"
+            formControlName="candidateProcess"
+            [compareWith]="compareProcess"
+          >
+            <option [ngValue]="null"></option>
+            @for (processOption of processesSharedCollection; track $index) {
+              <option [ngValue]="processOption">{{ processOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidateProcessStep">Candidate Process Step</label>
+          <select
+            class="form-control"
+            id="field_candidateProcessStep"
+            data-cy="candidateProcessStep"
+            name="candidateProcessStep"
+            formControlName="candidateProcessStep"
+            [compareWith]="compareProcessStep"
+          >
+            <option [ngValue]="null"></option>
+            @for (processStepOption of processStepsSharedCollection; track $index) {
+              <option [ngValue]="processStepOption">{{ processStepOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_tags">Tags</label>
+          <select
+            class="form-control"
+            id="field_tags"
+            data-cy="tags"
+            multiple
+            name="tags"
+            formControlName="tags"
+            [compareWith]="compareTag"
+          >
+            @for (tagOption of tagsSharedCollection; track $index) {
+              <option [ngValue]="tagOption">{{ tagOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_category">Category</label>
+          <select
+            class="form-control"
+            id="field_category"
+            data-cy="category"
+            name="category"
+            formControlName="category"
+            [compareWith]="compareCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (categoryOption of categoriesSharedCollection; track $index) {
+              <option [ngValue]="categoryOption">{{ categoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_subCategory">Sub Category</label>
+          <select
+            class="form-control"
+            id="field_subCategory"
+            data-cy="subCategory"
+            name="subCategory"
+            formControlName="subCategory"
+            [compareWith]="compareSubCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (subCategoryOption of subCategoriesSharedCollection; track $index) {
+              <option [ngValue]="subCategoryOption">{{ subCategoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_process">Process</label>
+          <select
+            class="form-control"
+            id="field_process"
+            data-cy="process"
+            name="process"
+            formControlName="process"
+            [compareWith]="compareProcess"
+          >
+            <option [ngValue]="null"></option>
+            @for (processOption of processesSharedCollection; track $index) {
+              <option [ngValue]="processOption">{{ processOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_processStep">Process Step</label>
+          <select
+            class="form-control"
+            id="field_processStep"
+            data-cy="processStep"
+            name="processStep"
+            formControlName="processStep"
+            [compareWith]="compareProcessStep"
+          >
+            <option [ngValue]="null"></option>
+            @for (processStepOption of processStepsSharedCollection; track $index) {
+              <option [ngValue]="processStepOption">{{ processStepOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

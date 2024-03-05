@@ -1,0 +1,148 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (candidate) {
+      <div>
+        <h2 data-cy="candidateDetailsHeading"><span>Candidate</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ candidate.id }}</span>
+          </dd>
+          <dt><span>First Name</span></dt>
+          <dd>
+            <span>{{ candidate.firstName }}</span>
+          </dd>
+          <dt><span>Last Name</span></dt>
+          <dd>
+            <span>{{ candidate.lastName }}</span>
+          </dd>
+          <dt><span>Photo</span></dt>
+          <dd>
+            @if (candidate.photo) {
+              <div>
+                <a (click)="openFile(candidate.photo, candidate.photoContentType)">
+                  <img
+                    [src]="'data:' + candidate.photoContentType + ';base64,' + candidate.photo"
+                    style="max-width: 100%"
+                    alt="candidate image"
+                  />
+                </a>
+                {{ candidate.photoContentType }}, {{ byteSize(candidate.photo) }}
+              </div>
+            }
+          </dd>
+          <dt><span>Profession</span></dt>
+          <dd>
+            <span>{{ candidate.profession }}</span>
+          </dd>
+          <dt><span>Nb Experience</span></dt>
+          <dd>
+            <span>{{ candidate.nbExperience }}</span>
+          </dd>
+          <dt><span>Personal Email</span></dt>
+          <dd>
+            <span>{{ candidate.personalEmail }}</span>
+          </dd>
+          <dt><span>Additional Infos</span></dt>
+          <dd>
+            @if (candidate.additionalInfos) {
+              <div>
+                <a [routerLink]="['/candidate-additional-infos', candidate.additionalInfos.id, 'view']">{{
+                  candidate.additionalInfos.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate Category</span></dt>
+          <dd>
+            @if (candidate.candidateCategory) {
+              <div>
+                <a [routerLink]="['/category', candidate.candidateCategory.id, 'view']">{{ candidate.candidateCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate Sub Category</span></dt>
+          <dd>
+            @if (candidate.candidateSubCategory) {
+              <div>
+                <a [routerLink]="['/sub-category', candidate.candidateSubCategory.id, 'view']">{{ candidate.candidateSubCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate Process</span></dt>
+          <dd>
+            @if (candidate.candidateProcess) {
+              <div>
+                <a [routerLink]="['/process', candidate.candidateProcess.id, 'view']">{{ candidate.candidateProcess.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate Process Step</span></dt>
+          <dd>
+            @if (candidate.candidateProcessStep) {
+              <div>
+                <a [routerLink]="['/process-step', candidate.candidateProcessStep.id, 'view']">{{ candidate.candidateProcessStep.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Tags</span></dt>
+          <dd>
+            @for (tags of candidate.tags; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span>Category</span></dt>
+          <dd>
+            @if (candidate.category) {
+              <div>
+                <a [routerLink]="['/category', candidate.category.id, 'view']">{{ candidate.category.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Sub Category</span></dt>
+          <dd>
+            @if (candidate.subCategory) {
+              <div>
+                <a [routerLink]="['/sub-category', candidate.subCategory.id, 'view']">{{ candidate.subCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Process</span></dt>
+          <dd>
+            @if (candidate.process) {
+              <div>
+                <a [routerLink]="['/process', candidate.process.id, 'view']">{{ candidate.process.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Process Step</span></dt>
+          <dd>
+            @if (candidate.processStep) {
+              <div>
+                <a [routerLink]="['/process-step', candidate.processStep.id, 'view']">{{ candidate.processStep.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/candidate', candidate.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

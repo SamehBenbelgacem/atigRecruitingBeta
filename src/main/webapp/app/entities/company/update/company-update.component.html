@@ -1,0 +1,283 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-company-heading" data-cy="CompanyCreateUpdateHeading">Create or edit a Company</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_speciality">Speciality</label>
+          <input
+            type="text"
+            class="form-control"
+            name="speciality"
+            id="field_speciality"
+            data-cy="speciality"
+            formControlName="speciality"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_logo">Logo</label>
+          <div>
+            @if (editForm.get('logo')!.value) {
+              <img
+                [src]="'data:' + editForm.get('logoContentType')!.value + ';base64,' + editForm.get('logo')!.value"
+                style="max-height: 100px"
+                alt="company image"
+              />
+            }
+            @if (editForm.get('logo')!.value) {
+              <div class="form-text text-danger clearfix">
+                <span class="pull-start">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value!) }}</span>
+                <button
+                  type="button"
+                  (click)="clearInputImage('logo', 'logoContentType', 'file_logo')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input type="file" id="file_logo" data-cy="logo" (change)="setFileData($event, 'logo', true)" accept="image/*" />
+          </div>
+          <input type="hidden" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
+          <input type="hidden" class="form-control" name="logoContentType" id="field_logoContentType" formControlName="logoContentType" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_website">Website</label>
+          <input type="text" class="form-control" name="website" id="field_website" data-cy="website" formControlName="website" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_location">Location</label>
+          <input type="text" class="form-control" name="location" id="field_location" data-cy="location" formControlName="location" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_infoEmail">Info Email</label>
+          <input type="text" class="form-control" name="infoEmail" id="field_infoEmail" data-cy="infoEmail" formControlName="infoEmail" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_phone">Phone</label>
+          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_firstContactDate">First Contact Date</label>
+          <div class="input-group">
+            <input
+              id="field_firstContactDate"
+              data-cy="firstContactDate"
+              type="text"
+              class="form-control"
+              name="firstContactDate"
+              ngbDatepicker
+              #firstContactDateDp="ngbDatepicker"
+              formControlName="firstContactDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="firstContactDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_companyCategory">Company Category</label>
+          <select
+            class="form-control"
+            id="field_companyCategory"
+            data-cy="companyCategory"
+            name="companyCategory"
+            formControlName="companyCategory"
+            [compareWith]="compareCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (categoryOption of categoriesSharedCollection; track $index) {
+              <option [ngValue]="categoryOption">{{ categoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_companySubCategory">Company Sub Category</label>
+          <select
+            class="form-control"
+            id="field_companySubCategory"
+            data-cy="companySubCategory"
+            name="companySubCategory"
+            formControlName="companySubCategory"
+            [compareWith]="compareSubCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (subCategoryOption of subCategoriesSharedCollection; track $index) {
+              <option [ngValue]="subCategoryOption">{{ subCategoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_companyProcess">Company Process</label>
+          <select
+            class="form-control"
+            id="field_companyProcess"
+            data-cy="companyProcess"
+            name="companyProcess"
+            formControlName="companyProcess"
+            [compareWith]="compareProcess"
+          >
+            <option [ngValue]="null"></option>
+            @for (processOption of processesSharedCollection; track $index) {
+              <option [ngValue]="processOption">{{ processOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_companyProcessStep">Company Process Step</label>
+          <select
+            class="form-control"
+            id="field_companyProcessStep"
+            data-cy="companyProcessStep"
+            name="companyProcessStep"
+            formControlName="companyProcessStep"
+            [compareWith]="compareProcessStep"
+          >
+            <option [ngValue]="null"></option>
+            @for (processStepOption of processStepsSharedCollection; track $index) {
+              <option [ngValue]="processStepOption">{{ processStepOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_tags">Tags</label>
+          <select
+            class="form-control"
+            id="field_tags"
+            data-cy="tags"
+            multiple
+            name="tags"
+            formControlName="tags"
+            [compareWith]="compareTag"
+          >
+            @for (tagOption of tagsSharedCollection; track $index) {
+              <option [ngValue]="tagOption">{{ tagOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_category">Category</label>
+          <select
+            class="form-control"
+            id="field_category"
+            data-cy="category"
+            name="category"
+            formControlName="category"
+            [compareWith]="compareCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (categoryOption of categoriesSharedCollection; track $index) {
+              <option [ngValue]="categoryOption">{{ categoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_subCategory">Sub Category</label>
+          <select
+            class="form-control"
+            id="field_subCategory"
+            data-cy="subCategory"
+            name="subCategory"
+            formControlName="subCategory"
+            [compareWith]="compareSubCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (subCategoryOption of subCategoriesSharedCollection; track $index) {
+              <option [ngValue]="subCategoryOption">{{ subCategoryOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_process">Process</label>
+          <select
+            class="form-control"
+            id="field_process"
+            data-cy="process"
+            name="process"
+            formControlName="process"
+            [compareWith]="compareProcess"
+          >
+            <option [ngValue]="null"></option>
+            @for (processOption of processesSharedCollection; track $index) {
+              <option [ngValue]="processOption">{{ processOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_processStep">Process Step</label>
+          <select
+            class="form-control"
+            id="field_processStep"
+            data-cy="processStep"
+            name="processStep"
+            formControlName="processStep"
+            [compareWith]="compareProcessStep"
+          >
+            <option [ngValue]="null"></option>
+            @for (processStepOption of processStepsSharedCollection; track $index) {
+              <option [ngValue]="processStepOption">{{ processStepOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
