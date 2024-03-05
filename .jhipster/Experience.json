@@ -1,0 +1,61 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232747"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "experience",
+  "fields": [
+    {
+      "fieldName": "company",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "companySite",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "role",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "location",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tasks",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Experience",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "tool",
+      "relationshipName": "tools",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "candidate",
+      "relationshipName": "experienceCandidate",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

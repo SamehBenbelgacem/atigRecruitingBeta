@@ -1,0 +1,58 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232745"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "candidate_additional_infos",
+  "fields": [
+    {
+      "fieldName": "birthday",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "actualSalary",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "expectedSalary",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "firstContact",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "location",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobile",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "disponibility",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "CandidateAdditionalInfos",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "objectContainingFile",
+      "relationshipName": "documents",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "candidate",
+      "otherEntityRelationshipName": "additionalInfos",
+      "relationshipName": "candidate",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

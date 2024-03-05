@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Email.
+    -->
+    <changeSet id="20240304232803-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="email_emailcredentials_id"
+                                 baseTableName="email"
+                                 constraintName="fk_email__email_emailcredentials_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="emailcredentials"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="email_candidate_id"
+                                 baseTableName="email"
+                                 constraintName="fk_email__email_candidate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidate"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="email_company_id"
+                                 baseTableName="email"
+                                 constraintName="fk_email__email_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="candidate_id"
+                                 baseTableName="email"
+                                 constraintName="fk_email__candidate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidate"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="email"
+                                 constraintName="fk_email__company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="emailcredentials_id"
+                                 baseTableName="email"
+                                 constraintName="fk_email__emailcredentials_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="emailcredentials"
+                                 />
+    </changeSet>
+</databaseChangeLog>

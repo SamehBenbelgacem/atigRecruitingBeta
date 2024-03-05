@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232752"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "language",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "EnumLanguageName",
+      "fieldValues": "GERMAN (German),ENGLISH (English),FRENCH (French),ARABIC (Arabic)"
+    },
+    {
+      "fieldName": "level",
+      "fieldType": "EnumLanguageLevel",
+      "fieldValues": "A1 (A1),A2 (A2),B1 (B1),B2 (B2),C1 (C1),C2 (C2)"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Language",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "candidate",
+      "relationshipName": "languageCandidate",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

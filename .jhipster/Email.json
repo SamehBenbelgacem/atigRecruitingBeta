@@ -1,0 +1,89 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232803"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "email",
+  "fields": [
+    {
+      "fieldName": "from",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "recipients",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "subject",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "text",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "EnumEmailType",
+      "fieldValues": "INBOX (Inbox),SENT (Sent),SNOOZED (Snoozed),DRAFT (Draft)"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "snoozedTo",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "folder",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "signatureText",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "signatureImage",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Email",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "objectContainingFile",
+      "relationshipName": "joinedFiles",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "subEmail",
+      "relationshipName": "subEmails",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "emailcredentials",
+      "relationshipName": "emailEmailcredentials",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "candidate",
+      "relationshipName": "emailCandidate",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "company",
+      "relationshipName": "emailCompany",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

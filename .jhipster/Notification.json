@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232755"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "notification",
+  "fields": [
+    {
+      "fieldName": "message",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "callUpDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "readStatus",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "attention",
+      "fieldType": "EnumPriority",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "LOW (Low),MEDUIM (Meduim),HIGH (High)"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "EnumNotificationType",
+      "fieldValues": "GENERAl (General),FORCOMPANY (For Company),FORCANDIDATE (For Candidate)"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Notification",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "candidate",
+      "relationshipName": "notificationCandidate",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "company",
+      "relationshipName": "notificationCompany",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

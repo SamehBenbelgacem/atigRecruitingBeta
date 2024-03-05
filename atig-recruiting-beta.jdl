@@ -1,0 +1,311 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType jwt
+    baseName atigRecruitingBeta
+    buildTool maven
+    cacheProvider no
+    clientFramework angular
+    clientTheme none
+    creationTimestamp 1709066351672
+    databaseType sql
+    devDatabaseType h2Disk
+    enableHibernateCache false
+    enableSwaggerCodegen false
+    enableTranslation false
+    jhipsterVersion "8.1.0"
+    jwtSecretKey "ZTBkODFlY2RmOWRlYjI0NTJiNjI1MTdlZjQ3MDBjOTBjZjQ3ZWIzMjRkYjM4NmJhNDdjOTQ3MWNhMWJlM2QwMzI1ZGM3OGI5NmY2MTI5MWQ0YjZkNWE3NWU4YmRjYWYzNzRhZjM0ZGFjZDNkMGYzNmI3OGYxY2ZhZDExNTFhNmQ="
+    messageBroker false
+    microfrontends []
+    nativeLanguage en
+    packageName atig.recruiting.beta
+    prodDatabaseType postgresql
+    reactive false
+    searchEngine false
+    serviceDiscoveryType false
+    testFrameworks []
+    websocket spring-websocket
+    withAdminUi true
+  }
+    entities *
+}
+
+enum EnumLanguageLevel {
+ A1("A1"), A2("A2"), B1("B1"), B2("B2"), C1("C1"), C2("C2")
+ }
+ 
+enum EnumLanguageName {
+	GERMAN("German"), ENGLISH("English"), FRENCH("French") ,ARABIC("Arabic")  
+}
+
+enum EnumPriority {
+	LOW("Low") , MEDUIM("Meduim") , HIGH("High")
+}
+
+enum EnumNotificationType {
+    GENERAl("General"), FORCOMPANY("For Company"), FORCANDIDATE("For Candidate")
+}
+
+enum EnumProsessType {
+    FORCOMPANY("For Company"), FORCANDIDATE("For Candidate")
+}
+
+enum EnumEmailType {
+   INBOX("Inbox"), SENT("Sent"), SNOOZED("Snoozed"), DRAFT("Draft")
+}
+
+
+entity Candidate {
+	firstName String required
+    lastName String required
+    photo ImageBlob
+	profession String required
+	nbExperience Integer
+	personalEmail String required 
+    }
+
+
+entity CandidateAdditionalInfos {
+    birthday Date  
+    actualSalary Integer
+    expectedSalary Integer
+    firstContact Date
+	location String
+	mobile String
+    disponibility String	 
+}
+
+
+entity ObjectContainingFile {
+    file Blob
+}
+
+entity Experience {
+    company String,
+    companySite String,
+    role String,
+    startDate LocalDate,
+    endDate LocalDate,
+    duration Double,
+    location String,
+	tasks String
+}
+
+entity Tool {
+    tool String
+}
+
+entity Education {
+    diploma String,
+    establishment String,
+    mention String,
+    startDate LocalDate,
+    endDate LocalDate,
+    duration Double,
+    location String,
+}
+
+entity Certification {
+	title String,
+	date LocalDate
+}
+
+entity Skill {
+	title String 
+}
+
+entity Language {
+    name EnumLanguageName,
+    level EnumLanguageLevel
+}
+
+entity Category {
+    title String
+} 
+
+entity SubCategory {
+    title String
+}
+
+entity Notification {
+    message String,
+    callUpDate ZonedDateTime,
+    readStatus Boolean,
+    attention EnumPriority required,
+	type EnumNotificationType
+}
+
+entity Note {
+   title String
+   date Date
+   description String
+}
+
+entity Process {
+    title String,
+    type EnumProsessType   
+}
+
+entity ProcessStep {
+    title String 
+    order String 
+    priority EnumPriority
+}
+
+entity Company {
+   name String
+   speciality String
+   logo ImageBlob
+   description String 
+   website String
+   location String
+   infoEmail String
+   phone String
+   firstContactDate LocalDate
+}
+
+entity Desider {
+    fullName String
+    email String
+    mobile String
+    role String
+}
+
+entity Offer {
+    title String,
+	description String,
+	date LocalDate
+}
+
+entity Emailcredentials {
+    username String,
+	password String
+}
+
+entity Email {
+	from String,
+	recipients String,
+	subject String,
+	text String,
+	type EnumEmailType,
+	date ZonedDateTime,
+	snoozedTo ZonedDateTime,
+	folder String,
+	signatureText String,
+	signatureImage ImageBlob
+}
+
+entity SubEmail {
+	from String,
+	recipients String,
+	text String,
+	type EnumEmailType,
+	date ZonedDateTime,
+	snoozedTo ZonedDateTime,
+	signatureText String,
+	signatureImage ImageBlob
+}
+
+entity Event {
+    title String,
+	externalParticipants String,
+	date ZonedDateTime,
+	duration Duration,
+	description String,
+	priority EnumPriority
+}
+
+entity Tag { 
+    title String 
+}
+
+relationship OneToOne {
+    Candidate{additionalInfos} to CandidateAdditionalInfos{candidate},
+}
+
+relationship OneToMany {
+    Candidate{experiences} to Experience
+    Candidate{educations} to Education
+    Candidate{certifications} to Certification
+    Candidate{skills} to Skill
+    Candidate{languages} to Language
+    CandidateAdditionalInfos{documents} to ObjectContainingFile
+    Experience{tools} to Tool
+	Category{subCategory} to SubCategory
+	Category{candidates} to Candidate
+	Category{companies} to Company
+	SubCategory{candidates} to Candidate
+	SubCategory{companies} to Company
+	Candidate{notifications} to Notification
+	Company{notifications} to Notification
+	Note{documents} to ObjectContainingFile
+	Company{notes} to Note
+	Candidate{notes} to Note
+	Process{steps} to ProcessStep
+	Process{candidates} to Candidate
+	Process{companies} to Company
+	ProcessStep{candidates} to Candidate
+	ProcessStep{companies} to Company
+	Company{desiders} to Desider
+	Company{offers} to Offer
+	Email{joinedFiles} to ObjectContainingFile
+	Email{subEmails} to SubEmail
+	Emailcredentials{emails} to Email
+	Candidate{emails} to Email
+	Company{emails} to Email
+}
+
+relationship ManyToMany {
+    Company{tags} to Tag{companies}
+	Offer{tags} to Tag{offers}
+    Candidate{tags} to Tag{candidates}
+}
+
+relationship ManyToOne {
+    Event{user} to User with builtInEntity
+	Experience{experienceCandidate} to Candidate
+    Education{educationCandidate} to Candidate
+    Certification{certificationCandidate} to Candidate
+    Skill{skillCandidate} to Candidate
+    Language{languageCandidate} to Candidate
+    ObjectContainingFile{candidateDocs} to CandidateAdditionalInfos
+    Tool{toolExperience} to Experience
+	SubCategory{subCategoryCategory} to Category
+	Candidate{candidateCategory} to Category
+	Company{companyCategory} to Category
+	Candidate{candidateSubCategory} to SubCategory
+	Company{companySubCategory} to SubCategory
+	Notification{notificationCandidate} to Candidate
+	Notification{notificationCompany} to Company
+	ObjectContainingFile{noteDocs} to Note
+	Note{noteCompany} to Company
+	Note{noteCandidate} to Candidate
+	ProcessStep{processStepProcess} to Process
+	Candidate{candidateProcess} to Process
+	Company{companyProcess} to Process
+	Candidate{candidateProcessStep} to ProcessStep
+	Company{companyProcessStep} to ProcessStep
+	Desider{desiderCompany} to Company
+	Offer{offerCompany} to Company
+	ObjectContainingFile{emailDocs} to Email
+	SubEmail{subEmailEmail} to Email
+	Email{emailEmailcredentials} to Emailcredentials
+	Email{emailCandidate} to Candidate
+	Email{emailCompany} to Company
+}
+
+
+
+
+		
+// Set pagination options
+paginate * with pagination
+
+filter all
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl		
+

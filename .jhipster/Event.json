@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232805"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "event",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "externalParticipants",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Duration"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "priority",
+      "fieldType": "EnumPriority",
+      "fieldValues": "LOW (Low),MEDUIM (Meduim),HIGH (High)"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Event",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

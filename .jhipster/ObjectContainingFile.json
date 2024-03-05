@@ -1,0 +1,40 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232746"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "object_containing_file",
+  "fields": [
+    {
+      "fieldName": "file",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ObjectContainingFile",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "candidateAdditionalInfos",
+      "relationshipName": "candidateDocs",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "note",
+      "relationshipName": "noteDocs",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "email",
+      "relationshipName": "emailDocs",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232754"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "sub_category",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "SubCategory",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "candidate",
+      "relationshipName": "candidates",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "company",
+      "relationshipName": "companies",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "category",
+      "relationshipName": "subCategoryCategory",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

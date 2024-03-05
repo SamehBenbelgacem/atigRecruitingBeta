@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Note.
+    -->
+    <changeSet id="20240304232756-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="note_company_id"
+                                 baseTableName="note"
+                                 constraintName="fk_note__note_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="note_candidate_id"
+                                 baseTableName="note"
+                                 constraintName="fk_note__note_candidate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidate"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="candidate_id"
+                                 baseTableName="note"
+                                 constraintName="fk_note__candidate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidate"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="note"
+                                 constraintName="fk_note__company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"
+                                 />
+    </changeSet>
+</databaseChangeLog>

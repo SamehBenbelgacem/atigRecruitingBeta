@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232757"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "process",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "EnumProsessType",
+      "fieldValues": "FORCOMPANY (For Company),FORCANDIDATE (For Candidate)"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Process",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "processStep",
+      "relationshipName": "steps",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "candidate",
+      "relationshipName": "candidates",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "company",
+      "relationshipName": "companies",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

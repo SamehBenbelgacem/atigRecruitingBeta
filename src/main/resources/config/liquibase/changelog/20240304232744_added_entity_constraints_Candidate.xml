@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Candidate.
+    -->
+    <changeSet id="20240304232744-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="additional_infos_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__additional_infos_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidate_additional_infos"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="candidate_category_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__candidate_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="candidate_sub_category_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__candidate_sub_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sub_category"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="candidate_process_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__candidate_process_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="process"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="candidate_process_step_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__candidate_process_step_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="process_step"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="candidate_id"
+                                 baseTableName="rel_candidate__tags"
+                                 constraintName="fk_rel_candidate__tags__candidate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidate"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="tags_id"
+                                 baseTableName="rel_candidate__tags"
+                                 constraintName="fk_rel_candidate__tags__tags_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tag"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="sub_category_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__sub_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sub_category"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="process_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__process_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="process"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="process_step_id"
+                                 baseTableName="candidate"
+                                 constraintName="fk_candidate__process_step_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="process_step"
+                                 />
+    </changeSet>
+</databaseChangeLog>

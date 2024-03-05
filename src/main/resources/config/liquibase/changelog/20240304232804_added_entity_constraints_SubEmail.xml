@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity SubEmail.
+    -->
+    <changeSet id="20240304232804-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="sub_email_email_id"
+                                 baseTableName="sub_email"
+                                 constraintName="fk_sub_email__sub_email_email_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="email"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="email_id"
+                                 baseTableName="sub_email"
+                                 constraintName="fk_sub_email__email_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="email"
+                                 />
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,27 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232751"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "skill",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Skill",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "candidate",
+      "relationshipName": "skillCandidate",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

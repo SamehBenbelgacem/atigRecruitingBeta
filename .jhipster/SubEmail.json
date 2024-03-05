@@ -1,0 +1,57 @@
+{
+  "annotations": {
+    "changelogDate": "20240304232804"
+  },
+  "applications": ["atigRecruitingBeta"],
+  "dto": "mapstruct",
+  "entityTableName": "sub_email",
+  "fields": [
+    {
+      "fieldName": "from",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "recipients",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "text",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "EnumEmailType",
+      "fieldValues": "INBOX (Inbox),SENT (Sent),SNOOZED (Snoozed),DRAFT (Draft)"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "snoozedTo",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "signatureText",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "signatureImage",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "SubEmail",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "email",
+      "relationshipName": "subEmailEmail",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

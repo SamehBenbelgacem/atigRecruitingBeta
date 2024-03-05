@@ -1,0 +1,11 @@
+id;message;call_up_date;read_status;attention;type
+1;gah the when;2024-03-04T22:40:17;false;HIGH;GENERAl
+2;plug optimistically;2024-03-04T14:04:08;false;LOW;GENERAl
+3;or ack;2024-03-04T18:38:18;false;HIGH;FORCANDIDATE
+4;brisk noisily;2024-03-04T04:28:45;true;HIGH;GENERAl
+5;unto;2024-03-04T09:00:10;false;LOW;FORCOMPANY
+6;sometimes continually;2024-03-04T00:44:31;true;LOW;FORCOMPANY
+7;comestible phooey when;2024-03-04T17:31:47;false;LOW;FORCOMPANY
+8;yahoo;2024-03-04T08:33:43;true;LOW;FORCANDIDATE
+9;radiate;2024-03-04T17:17:01;true;LOW;GENERAl
+10;solemnly in;2024-03-04T13:48:00;false;MEDUIM;GENERAl
