@@ -1,0 +1,200 @@
+<div>
+  <h2 id="page-heading" data-cy="SubEmailHeading">
+    <span>Sub Emails</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-sub-email"
+        [routerLink]="['/sub-email/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Sub Email</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (subEmails?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Sub Emails found</span>
+    </div>
+  }
+
+  @if (subEmails && subEmails.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="from">
+              <div class="d-flex">
+                <span>From</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="recipients">
+              <div class="d-flex">
+                <span>Recipients</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="text">
+              <div class="d-flex">
+                <span>Text</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span>Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="date">
+              <div class="d-flex">
+                <span>Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="snoozedTo">
+              <div class="d-flex">
+                <span>Snoozed To</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="signatureText">
+              <div class="d-flex">
+                <span>Signature Text</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="signatureImage">
+              <div class="d-flex">
+                <span>Signature Image</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="subEmailEmail.id">
+              <div class="d-flex">
+                <span>Sub Email Email</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email.id">
+              <div class="d-flex">
+                <span>Email</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (subEmail of subEmails; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/sub-email', subEmail.id, 'view']">{{ subEmail.id }}</a>
+              </td>
+              <td>{{ subEmail.from }}</td>
+              <td>{{ subEmail.recipients }}</td>
+              <td>{{ subEmail.text }}</td>
+              <td>{{ subEmail.type }}</td>
+              <td>{{ subEmail.date | formatMediumDatetime }}</td>
+              <td>{{ subEmail.snoozedTo | formatMediumDatetime }}</td>
+              <td>{{ subEmail.signatureText }}</td>
+              <td>
+                @if (subEmail.signatureImage) {
+                  <a (click)="openFile(subEmail.signatureImage, subEmail.signatureImageContentType)">
+                    <img
+                      [src]="'data:' + subEmail.signatureImageContentType + ';base64,' + subEmail.signatureImage"
+                      style="max-height: 30px"
+                      alt="subEmail image"
+                    />
+                  </a>
+                  <span>{{ subEmail.signatureImageContentType }}, {{ byteSize(subEmail.signatureImage) }}</span>
+                }
+              </td>
+              <td>
+                @if (subEmail.subEmailEmail) {
+                  <div>
+                    <a [routerLink]="['/email', subEmail.subEmailEmail.id, 'view']">{{ subEmail.subEmailEmail.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (subEmail.email) {
+                  <div>
+                    <a [routerLink]="['/email', subEmail.email.id, 'view']">{{ subEmail.email.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/sub-email', subEmail.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/sub-email', subEmail.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(subEmail)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (subEmails && subEmails.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (subCategory) {
+      <div>
+        <h2 data-cy="subCategoryDetailsHeading"><span>Sub Category</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ subCategory.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ subCategory.title }}</span>
+          </dd>
+          <dt><span>Sub Category Category</span></dt>
+          <dd>
+            @if (subCategory.subCategoryCategory) {
+              <div>
+                <a [routerLink]="['/category', subCategory.subCategoryCategory.id, 'view']">{{ subCategory.subCategoryCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Category</span></dt>
+          <dd>
+            @if (subCategory.category) {
+              <div>
+                <a [routerLink]="['/category', subCategory.category.id, 'view']">{{ subCategory.category.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/sub-category', subCategory.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (processStep) {
+      <div>
+        <h2 data-cy="processStepDetailsHeading"><span>Process Step</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ processStep.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ processStep.title }}</span>
+          </dd>
+          <dt><span>Order</span></dt>
+          <dd>
+            <span>{{ processStep.order }}</span>
+          </dd>
+          <dt><span>Priority</span></dt>
+          <dd>
+            <span>{{ processStep.priority }}</span>
+          </dd>
+          <dt><span>Process Step Process</span></dt>
+          <dd>
+            @if (processStep.processStepProcess) {
+              <div>
+                <a [routerLink]="['/process', processStep.processStepProcess.id, 'view']">{{ processStep.processStepProcess.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Process</span></dt>
+          <dd>
+            @if (processStep.process) {
+              <div>
+                <a [routerLink]="['/process', processStep.process.id, 'view']">{{ processStep.process.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/process-step', processStep.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

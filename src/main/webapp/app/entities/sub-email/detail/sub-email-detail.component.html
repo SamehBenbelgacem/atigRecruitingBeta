@@ -1,0 +1,89 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (subEmail) {
+      <div>
+        <h2 data-cy="subEmailDetailsHeading"><span>Sub Email</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ subEmail.id }}</span>
+          </dd>
+          <dt><span>From</span></dt>
+          <dd>
+            <span>{{ subEmail.from }}</span>
+          </dd>
+          <dt><span>Recipients</span></dt>
+          <dd>
+            <span>{{ subEmail.recipients }}</span>
+          </dd>
+          <dt><span>Text</span></dt>
+          <dd>
+            <span>{{ subEmail.text }}</span>
+          </dd>
+          <dt><span>Type</span></dt>
+          <dd>
+            <span>{{ subEmail.type }}</span>
+          </dd>
+          <dt><span>Date</span></dt>
+          <dd>
+            <span>{{ subEmail.date | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Snoozed To</span></dt>
+          <dd>
+            <span>{{ subEmail.snoozedTo | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Signature Text</span></dt>
+          <dd>
+            <span>{{ subEmail.signatureText }}</span>
+          </dd>
+          <dt><span>Signature Image</span></dt>
+          <dd>
+            @if (subEmail.signatureImage) {
+              <div>
+                <a (click)="openFile(subEmail.signatureImage, subEmail.signatureImageContentType)">
+                  <img
+                    [src]="'data:' + subEmail.signatureImageContentType + ';base64,' + subEmail.signatureImage"
+                    style="max-width: 100%"
+                    alt="subEmail image"
+                  />
+                </a>
+                {{ subEmail.signatureImageContentType }}, {{ byteSize(subEmail.signatureImage) }}
+              </div>
+            }
+          </dd>
+          <dt><span>Sub Email Email</span></dt>
+          <dd>
+            @if (subEmail.subEmailEmail) {
+              <div>
+                <a [routerLink]="['/email', subEmail.subEmailEmail.id, 'view']">{{ subEmail.subEmailEmail.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            @if (subEmail.email) {
+              <div>
+                <a [routerLink]="['/email', subEmail.email.id, 'view']">{{ subEmail.email.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/sub-email', subEmail.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (notification) {
+      <div>
+        <h2 data-cy="notificationDetailsHeading"><span>Notification</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ notification.id }}</span>
+          </dd>
+          <dt><span>Message</span></dt>
+          <dd>
+            <span>{{ notification.message }}</span>
+          </dd>
+          <dt><span>Call Up Date</span></dt>
+          <dd>
+            <span>{{ notification.callUpDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Read Status</span></dt>
+          <dd>
+            <span>{{ notification.readStatus }}</span>
+          </dd>
+          <dt><span>Attention</span></dt>
+          <dd>
+            <span>{{ notification.attention }}</span>
+          </dd>
+          <dt><span>Type</span></dt>
+          <dd>
+            <span>{{ notification.type }}</span>
+          </dd>
+          <dt><span>Notification Candidate</span></dt>
+          <dd>
+            @if (notification.notificationCandidate) {
+              <div>
+                <a [routerLink]="['/candidate', notification.notificationCandidate.id, 'view']">{{
+                  notification.notificationCandidate.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Notification Company</span></dt>
+          <dd>
+            @if (notification.notificationCompany) {
+              <div>
+                <a [routerLink]="['/company', notification.notificationCompany.id, 'view']">{{ notification.notificationCompany.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate</span></dt>
+          <dd>
+            @if (notification.candidate) {
+              <div>
+                <a [routerLink]="['/candidate', notification.candidate.id, 'view']">{{ notification.candidate.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Company</span></dt>
+          <dd>
+            @if (notification.company) {
+              <div>
+                <a [routerLink]="['/company', notification.company.id, 'view']">{{ notification.company.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/notification', notification.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

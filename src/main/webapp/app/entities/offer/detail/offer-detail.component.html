@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (offer) {
+      <div>
+        <h2 data-cy="offerDetailsHeading"><span>Offer</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ offer.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ offer.title }}</span>
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ offer.description }}</span>
+          </dd>
+          <dt><span>Date</span></dt>
+          <dd>
+            <span>{{ offer.date | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Offer Company</span></dt>
+          <dd>
+            @if (offer.offerCompany) {
+              <div>
+                <a [routerLink]="['/company', offer.offerCompany.id, 'view']">{{ offer.offerCompany.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Tags</span></dt>
+          <dd>
+            @for (tags of offer.tags; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span>Company</span></dt>
+          <dd>
+            @if (offer.company) {
+              <div>
+                <a [routerLink]="['/company', offer.company.id, 'view']">{{ offer.company.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/offer', offer.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

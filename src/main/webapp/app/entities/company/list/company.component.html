@@ -1,0 +1,336 @@
+<div>
+  <h2 id="page-heading" data-cy="CompanyHeading">
+    <span>Companies</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-company"
+        [routerLink]="['/company/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Company</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (companies?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Companies found</span>
+    </div>
+  }
+
+  @if (companies && companies.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span>Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="speciality">
+              <div class="d-flex">
+                <span>Speciality</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="logo">
+              <div class="d-flex">
+                <span>Logo</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span>Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="website">
+              <div class="d-flex">
+                <span>Website</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="location">
+              <div class="d-flex">
+                <span>Location</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="infoEmail">
+              <div class="d-flex">
+                <span>Info Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="phone">
+              <div class="d-flex">
+                <span>Phone</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="firstContactDate">
+              <div class="d-flex">
+                <span>First Contact Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="companyCategory.id">
+              <div class="d-flex">
+                <span>Company Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="companySubCategory.id">
+              <div class="d-flex">
+                <span>Company Sub Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="companyProcess.id">
+              <div class="d-flex">
+                <span>Company Process</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="companyProcessStep.id">
+              <div class="d-flex">
+                <span>Company Process Step</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="category.id">
+              <div class="d-flex">
+                <span>Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="subCategory.id">
+              <div class="d-flex">
+                <span>Sub Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="process.id">
+              <div class="d-flex">
+                <span>Process</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="processStep.id">
+              <div class="d-flex">
+                <span>Process Step</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (company of companies; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/company', company.id, 'view']">{{ company.id }}</a>
+              </td>
+              <td>{{ company.name }}</td>
+              <td>{{ company.speciality }}</td>
+              <td>
+                @if (company.logo) {
+                  <a (click)="openFile(company.logo, company.logoContentType)">
+                    <img
+                      [src]="'data:' + company.logoContentType + ';base64,' + company.logo"
+                      style="max-height: 30px"
+                      alt="company image"
+                    />
+                  </a>
+                  <span>{{ company.logoContentType }}, {{ byteSize(company.logo) }}</span>
+                }
+              </td>
+              <td>{{ company.description }}</td>
+              <td>{{ company.website }}</td>
+              <td>{{ company.location }}</td>
+              <td>{{ company.infoEmail }}</td>
+              <td>{{ company.phone }}</td>
+              <td>{{ company.firstContactDate | formatMediumDate }}</td>
+              <td>
+                @if (company.companyCategory) {
+                  <div>
+                    <a [routerLink]="['/category', company.companyCategory.id, 'view']">{{ company.companyCategory.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (company.companySubCategory) {
+                  <div>
+                    <a [routerLink]="['/sub-category', company.companySubCategory.id, 'view']">{{ company.companySubCategory.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (company.companyProcess) {
+                  <div>
+                    <a [routerLink]="['/process', company.companyProcess.id, 'view']">{{ company.companyProcess.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (company.companyProcessStep) {
+                  <div>
+                    <a [routerLink]="['/process-step', company.companyProcessStep.id, 'view']">{{ company.companyProcessStep.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (company.category) {
+                  <div>
+                    <a [routerLink]="['/category', company.category.id, 'view']">{{ company.category.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (company.subCategory) {
+                  <div>
+                    <a [routerLink]="['/sub-category', company.subCategory.id, 'view']">{{ company.subCategory.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (company.process) {
+                  <div>
+                    <a [routerLink]="['/process', company.process.id, 'view']">{{ company.process.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (company.processStep) {
+                  <div>
+                    <a [routerLink]="['/process-step', company.processStep.id, 'view']">{{ company.processStep.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/notification']"
+                    [queryParams]="{ 'filter[companyId.in]': company.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Notification</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/note']"
+                    [queryParams]="{ 'filter[companyId.in]': company.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Note</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/desider']"
+                    [queryParams]="{ 'filter[companyId.in]': company.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Desider</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/offer']"
+                    [queryParams]="{ 'filter[companyId.in]': company.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Offer</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/email']"
+                    [queryParams]="{ 'filter[companyId.in]': company.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Email</span>
+                  </button>
+                  <a [routerLink]="['/company', company.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/company', company.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(company)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (companies && companies.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

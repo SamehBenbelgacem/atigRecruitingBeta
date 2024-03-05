@@ -1,0 +1,181 @@
+<div>
+  <h2 id="page-heading" data-cy="EducationHeading">
+    <span>Educations</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-education"
+        [routerLink]="['/education/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Education</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (educations?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Educations found</span>
+    </div>
+  }
+
+  @if (educations && educations.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diploma">
+              <div class="d-flex">
+                <span>Diploma</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="establishment">
+              <div class="d-flex">
+                <span>Establishment</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="mention">
+              <div class="d-flex">
+                <span>Mention</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="startDate">
+              <div class="d-flex">
+                <span>Start Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="endDate">
+              <div class="d-flex">
+                <span>End Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="duration">
+              <div class="d-flex">
+                <span>Duration</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="location">
+              <div class="d-flex">
+                <span>Location</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="educationCandidate.id">
+              <div class="d-flex">
+                <span>Education Candidate</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidate.id">
+              <div class="d-flex">
+                <span>Candidate</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (education of educations; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/education', education.id, 'view']">{{ education.id }}</a>
+              </td>
+              <td>{{ education.diploma }}</td>
+              <td>{{ education.establishment }}</td>
+              <td>{{ education.mention }}</td>
+              <td>{{ education.startDate | formatMediumDate }}</td>
+              <td>{{ education.endDate | formatMediumDate }}</td>
+              <td>{{ education.duration }}</td>
+              <td>{{ education.location }}</td>
+              <td>
+                @if (education.educationCandidate) {
+                  <div>
+                    <a [routerLink]="['/candidate', education.educationCandidate.id, 'view']">{{ education.educationCandidate.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (education.candidate) {
+                  <div>
+                    <a [routerLink]="['/candidate', education.candidate.id, 'view']">{{ education.candidate.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/education', education.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/education', education.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(education)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (educations && educations.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

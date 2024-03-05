@@ -1,0 +1,202 @@
+<div>
+  <h2 id="page-heading" data-cy="ObjectContainingFileHeading">
+    <span>Object Containing Files</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-object-containing-file"
+        [routerLink]="['/object-containing-file/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Object Containing File</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (objectContainingFiles?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Object Containing Files found</span>
+    </div>
+  }
+
+  @if (objectContainingFiles && objectContainingFiles.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="file">
+              <div class="d-flex">
+                <span>File</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidateDocs.id">
+              <div class="d-flex">
+                <span>Candidate Docs</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="noteDocs.id">
+              <div class="d-flex">
+                <span>Note Docs</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="emailDocs.id">
+              <div class="d-flex">
+                <span>Email Docs</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidateAdditionalInfos.id">
+              <div class="d-flex">
+                <span>Candidate Additional Infos</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="note.id">
+              <div class="d-flex">
+                <span>Note</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email.id">
+              <div class="d-flex">
+                <span>Email</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (objectContainingFile of objectContainingFiles; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/object-containing-file', objectContainingFile.id, 'view']">{{ objectContainingFile.id }}</a>
+              </td>
+              <td>
+                @if (objectContainingFile.file) {
+                  <a (click)="openFile(objectContainingFile.file, objectContainingFile.fileContentType)">Open</a>
+                  <span>{{ objectContainingFile.fileContentType }}, {{ byteSize(objectContainingFile.file) }}</span>
+                }
+              </td>
+              <td>
+                @if (objectContainingFile.candidateDocs) {
+                  <div>
+                    <a [routerLink]="['/candidate-additional-infos', objectContainingFile.candidateDocs.id, 'view']">{{
+                      objectContainingFile.candidateDocs.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (objectContainingFile.noteDocs) {
+                  <div>
+                    <a [routerLink]="['/note', objectContainingFile.noteDocs.id, 'view']">{{ objectContainingFile.noteDocs.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (objectContainingFile.emailDocs) {
+                  <div>
+                    <a [routerLink]="['/email', objectContainingFile.emailDocs.id, 'view']">{{ objectContainingFile.emailDocs.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (objectContainingFile.candidateAdditionalInfos) {
+                  <div>
+                    <a [routerLink]="['/candidate-additional-infos', objectContainingFile.candidateAdditionalInfos.id, 'view']">{{
+                      objectContainingFile.candidateAdditionalInfos.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (objectContainingFile.note) {
+                  <div>
+                    <a [routerLink]="['/note', objectContainingFile.note.id, 'view']">{{ objectContainingFile.note.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (objectContainingFile.email) {
+                  <div>
+                    <a [routerLink]="['/email', objectContainingFile.email.id, 'view']">{{ objectContainingFile.email.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/object-containing-file', objectContainingFile.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/object-containing-file', objectContainingFile.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(objectContainingFile)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (objectContainingFiles && objectContainingFiles.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

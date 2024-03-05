@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tool) {
+      <div>
+        <h2 data-cy="toolDetailsHeading"><span>Tool</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ tool.id }}</span>
+          </dd>
+          <dt><span>Tool</span></dt>
+          <dd>
+            <span>{{ tool.tool }}</span>
+          </dd>
+          <dt><span>Tool Experience</span></dt>
+          <dd>
+            @if (tool.toolExperience) {
+              <div>
+                <a [routerLink]="['/experience', tool.toolExperience.id, 'view']">{{ tool.toolExperience.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Experience</span></dt>
+          <dd>
+            @if (tool.experience) {
+              <div>
+                <a [routerLink]="['/experience', tool.experience.id, 'view']">{{ tool.experience.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tool', tool.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (objectContainingFile) {
+      <div>
+        <h2 data-cy="objectContainingFileDetailsHeading"><span>Object Containing File</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ objectContainingFile.id }}</span>
+          </dd>
+          <dt><span>File</span></dt>
+          <dd>
+            @if (objectContainingFile.file) {
+              <div>
+                <a (click)="openFile(objectContainingFile.file, objectContainingFile.fileContentType)">Open</a>
+                {{ objectContainingFile.fileContentType }}, {{ byteSize(objectContainingFile.file) }}
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate Docs</span></dt>
+          <dd>
+            @if (objectContainingFile.candidateDocs) {
+              <div>
+                <a [routerLink]="['/candidate-additional-infos', objectContainingFile.candidateDocs.id, 'view']">{{
+                  objectContainingFile.candidateDocs.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Note Docs</span></dt>
+          <dd>
+            @if (objectContainingFile.noteDocs) {
+              <div>
+                <a [routerLink]="['/note', objectContainingFile.noteDocs.id, 'view']">{{ objectContainingFile.noteDocs.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Email Docs</span></dt>
+          <dd>
+            @if (objectContainingFile.emailDocs) {
+              <div>
+                <a [routerLink]="['/email', objectContainingFile.emailDocs.id, 'view']">{{ objectContainingFile.emailDocs.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate Additional Infos</span></dt>
+          <dd>
+            @if (objectContainingFile.candidateAdditionalInfos) {
+              <div>
+                <a [routerLink]="['/candidate-additional-infos', objectContainingFile.candidateAdditionalInfos.id, 'view']">{{
+                  objectContainingFile.candidateAdditionalInfos.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Note</span></dt>
+          <dd>
+            @if (objectContainingFile.note) {
+              <div>
+                <a [routerLink]="['/note', objectContainingFile.note.id, 'view']">{{ objectContainingFile.note.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            @if (objectContainingFile.email) {
+              <div>
+                <a [routerLink]="['/email', objectContainingFile.email.id, 'view']">{{ objectContainingFile.email.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/object-containing-file', objectContainingFile.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

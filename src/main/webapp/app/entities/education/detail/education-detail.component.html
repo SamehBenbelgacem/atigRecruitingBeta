@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (education) {
+      <div>
+        <h2 data-cy="educationDetailsHeading"><span>Education</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ education.id }}</span>
+          </dd>
+          <dt><span>Diploma</span></dt>
+          <dd>
+            <span>{{ education.diploma }}</span>
+          </dd>
+          <dt><span>Establishment</span></dt>
+          <dd>
+            <span>{{ education.establishment }}</span>
+          </dd>
+          <dt><span>Mention</span></dt>
+          <dd>
+            <span>{{ education.mention }}</span>
+          </dd>
+          <dt><span>Start Date</span></dt>
+          <dd>
+            <span>{{ education.startDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>End Date</span></dt>
+          <dd>
+            <span>{{ education.endDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Duration</span></dt>
+          <dd>
+            <span>{{ education.duration }}</span>
+          </dd>
+          <dt><span>Location</span></dt>
+          <dd>
+            <span>{{ education.location }}</span>
+          </dd>
+          <dt><span>Education Candidate</span></dt>
+          <dd>
+            @if (education.educationCandidate) {
+              <div>
+                <a [routerLink]="['/candidate', education.educationCandidate.id, 'view']">{{ education.educationCandidate.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate</span></dt>
+          <dd>
+            @if (education.candidate) {
+              <div>
+                <a [routerLink]="['/candidate', education.candidate.id, 'view']">{{ education.candidate.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/education', education.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

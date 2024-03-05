@@ -1,0 +1,129 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (email) {
+      <div>
+        <h2 data-cy="emailDetailsHeading"><span>Email</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ email.id }}</span>
+          </dd>
+          <dt><span>From</span></dt>
+          <dd>
+            <span>{{ email.from }}</span>
+          </dd>
+          <dt><span>Recipients</span></dt>
+          <dd>
+            <span>{{ email.recipients }}</span>
+          </dd>
+          <dt><span>Subject</span></dt>
+          <dd>
+            <span>{{ email.subject }}</span>
+          </dd>
+          <dt><span>Text</span></dt>
+          <dd>
+            <span>{{ email.text }}</span>
+          </dd>
+          <dt><span>Type</span></dt>
+          <dd>
+            <span>{{ email.type }}</span>
+          </dd>
+          <dt><span>Date</span></dt>
+          <dd>
+            <span>{{ email.date | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Snoozed To</span></dt>
+          <dd>
+            <span>{{ email.snoozedTo | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Folder</span></dt>
+          <dd>
+            <span>{{ email.folder }}</span>
+          </dd>
+          <dt><span>Signature Text</span></dt>
+          <dd>
+            <span>{{ email.signatureText }}</span>
+          </dd>
+          <dt><span>Signature Image</span></dt>
+          <dd>
+            @if (email.signatureImage) {
+              <div>
+                <a (click)="openFile(email.signatureImage, email.signatureImageContentType)">
+                  <img
+                    [src]="'data:' + email.signatureImageContentType + ';base64,' + email.signatureImage"
+                    style="max-width: 100%"
+                    alt="email image"
+                  />
+                </a>
+                {{ email.signatureImageContentType }}, {{ byteSize(email.signatureImage) }}
+              </div>
+            }
+          </dd>
+          <dt><span>Email Emailcredentials</span></dt>
+          <dd>
+            @if (email.emailEmailcredentials) {
+              <div>
+                <a [routerLink]="['/emailcredentials', email.emailEmailcredentials.id, 'view']">{{ email.emailEmailcredentials.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Email Candidate</span></dt>
+          <dd>
+            @if (email.emailCandidate) {
+              <div>
+                <a [routerLink]="['/candidate', email.emailCandidate.id, 'view']">{{ email.emailCandidate.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Email Company</span></dt>
+          <dd>
+            @if (email.emailCompany) {
+              <div>
+                <a [routerLink]="['/company', email.emailCompany.id, 'view']">{{ email.emailCompany.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate</span></dt>
+          <dd>
+            @if (email.candidate) {
+              <div>
+                <a [routerLink]="['/candidate', email.candidate.id, 'view']">{{ email.candidate.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Company</span></dt>
+          <dd>
+            @if (email.company) {
+              <div>
+                <a [routerLink]="['/company', email.company.id, 'view']">{{ email.company.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Emailcredentials</span></dt>
+          <dd>
+            @if (email.emailcredentials) {
+              <div>
+                <a [routerLink]="['/emailcredentials', email.emailcredentials.id, 'view']">{{ email.emailcredentials.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/email', email.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

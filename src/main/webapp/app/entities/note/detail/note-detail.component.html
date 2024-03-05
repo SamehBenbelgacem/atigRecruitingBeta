@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (note) {
+      <div>
+        <h2 data-cy="noteDetailsHeading"><span>Note</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ note.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ note.title }}</span>
+          </dd>
+          <dt><span>Date</span></dt>
+          <dd>
+            <span>{{ note.date | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ note.description }}</span>
+          </dd>
+          <dt><span>Note Company</span></dt>
+          <dd>
+            @if (note.noteCompany) {
+              <div>
+                <a [routerLink]="['/company', note.noteCompany.id, 'view']">{{ note.noteCompany.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Note Candidate</span></dt>
+          <dd>
+            @if (note.noteCandidate) {
+              <div>
+                <a [routerLink]="['/candidate', note.noteCandidate.id, 'view']">{{ note.noteCandidate.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate</span></dt>
+          <dd>
+            @if (note.candidate) {
+              <div>
+                <a [routerLink]="['/candidate', note.candidate.id, 'view']">{{ note.candidate.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Company</span></dt>
+          <dd>
+            @if (note.company) {
+              <div>
+                <a [routerLink]="['/company', note.company.id, 'view']">{{ note.company.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/note', note.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

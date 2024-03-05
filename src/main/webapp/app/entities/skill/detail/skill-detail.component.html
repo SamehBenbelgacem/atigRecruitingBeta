@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (skill) {
+      <div>
+        <h2 data-cy="skillDetailsHeading"><span>Skill</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ skill.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ skill.title }}</span>
+          </dd>
+          <dt><span>Skill Candidate</span></dt>
+          <dd>
+            @if (skill.skillCandidate) {
+              <div>
+                <a [routerLink]="['/candidate', skill.skillCandidate.id, 'view']">{{ skill.skillCandidate.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Candidate</span></dt>
+          <dd>
+            @if (skill.candidate) {
+              <div>
+                <a [routerLink]="['/candidate', skill.candidate.id, 'view']">{{ skill.candidate.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/skill', skill.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

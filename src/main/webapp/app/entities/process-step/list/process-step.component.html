@@ -1,0 +1,169 @@
+<div>
+  <h2 id="page-heading" data-cy="ProcessStepHeading">
+    <span>Process Steps</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-process-step"
+        [routerLink]="['/process-step/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Process Step</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (processSteps?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Process Steps found</span>
+    </div>
+  }
+
+  @if (processSteps && processSteps.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="title">
+              <div class="d-flex">
+                <span>Title</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="order">
+              <div class="d-flex">
+                <span>Order</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="priority">
+              <div class="d-flex">
+                <span>Priority</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="processStepProcess.id">
+              <div class="d-flex">
+                <span>Process Step Process</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="process.id">
+              <div class="d-flex">
+                <span>Process</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (processStep of processSteps; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/process-step', processStep.id, 'view']">{{ processStep.id }}</a>
+              </td>
+              <td>{{ processStep.title }}</td>
+              <td>{{ processStep.order }}</td>
+              <td>{{ processStep.priority }}</td>
+              <td>
+                @if (processStep.processStepProcess) {
+                  <div>
+                    <a [routerLink]="['/process', processStep.processStepProcess.id, 'view']">{{ processStep.processStepProcess.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (processStep.process) {
+                  <div>
+                    <a [routerLink]="['/process', processStep.process.id, 'view']">{{ processStep.process.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/candidate']"
+                    [queryParams]="{ 'filter[processStepId.in]': processStep.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Candidate</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/company']"
+                    [queryParams]="{ 'filter[processStepId.in]': processStep.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Company</span>
+                  </button>
+                  <a [routerLink]="['/process-step', processStep.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/process-step', processStep.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(processStep)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (processSteps && processSteps.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,134 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-education-heading" data-cy="EducationCreateUpdateHeading">Create or edit a Education</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_diploma">Diploma</label>
+          <input type="text" class="form-control" name="diploma" id="field_diploma" data-cy="diploma" formControlName="diploma" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_establishment">Establishment</label>
+          <input
+            type="text"
+            class="form-control"
+            name="establishment"
+            id="field_establishment"
+            data-cy="establishment"
+            formControlName="establishment"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_mention">Mention</label>
+          <input type="text" class="form-control" name="mention" id="field_mention" data-cy="mention" formControlName="mention" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_startDate">Start Date</label>
+          <div class="input-group">
+            <input
+              id="field_startDate"
+              data-cy="startDate"
+              type="text"
+              class="form-control"
+              name="startDate"
+              ngbDatepicker
+              #startDateDp="ngbDatepicker"
+              formControlName="startDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="startDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_endDate">End Date</label>
+          <div class="input-group">
+            <input
+              id="field_endDate"
+              data-cy="endDate"
+              type="text"
+              class="form-control"
+              name="endDate"
+              ngbDatepicker
+              #endDateDp="ngbDatepicker"
+              formControlName="endDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="endDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_duration">Duration</label>
+          <input type="number" class="form-control" name="duration" id="field_duration" data-cy="duration" formControlName="duration" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_location">Location</label>
+          <input type="text" class="form-control" name="location" id="field_location" data-cy="location" formControlName="location" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_educationCandidate">Education Candidate</label>
+          <select
+            class="form-control"
+            id="field_educationCandidate"
+            data-cy="educationCandidate"
+            name="educationCandidate"
+            formControlName="educationCandidate"
+            [compareWith]="compareCandidate"
+          >
+            <option [ngValue]="null"></option>
+            @for (candidateOption of candidatesSharedCollection; track $index) {
+              <option [ngValue]="candidateOption">{{ candidateOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidate">Candidate</label>
+          <select
+            class="form-control"
+            id="field_candidate"
+            data-cy="candidate"
+            name="candidate"
+            formControlName="candidate"
+            [compareWith]="compareCandidate"
+          >
+            <option [ngValue]="null"></option>
+            @for (candidateOption of candidatesSharedCollection; track $index) {
+              <option [ngValue]="candidateOption">{{ candidateOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

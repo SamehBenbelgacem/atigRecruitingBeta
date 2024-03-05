@@ -1,0 +1,184 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-sub-email-heading" data-cy="SubEmailCreateUpdateHeading">Create or edit a Sub Email</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_from">From</label>
+          <input type="text" class="form-control" name="from" id="field_from" data-cy="from" formControlName="from" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_recipients">Recipients</label>
+          <input
+            type="text"
+            class="form-control"
+            name="recipients"
+            id="field_recipients"
+            data-cy="recipients"
+            formControlName="recipients"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_text">Text</label>
+          <input type="text" class="form-control" name="text" id="field_text" data-cy="text" formControlName="text" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null"></option>
+            @for (enumEmailType of enumEmailTypeValues; track $index) {
+              <option [value]="enumEmailType">{{ enumEmailType }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_date">Date</label>
+          <div class="d-flex">
+            <input
+              id="field_date"
+              data-cy="date"
+              type="datetime-local"
+              class="form-control"
+              name="date"
+              formControlName="date"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_snoozedTo">Snoozed To</label>
+          <div class="d-flex">
+            <input
+              id="field_snoozedTo"
+              data-cy="snoozedTo"
+              type="datetime-local"
+              class="form-control"
+              name="snoozedTo"
+              formControlName="snoozedTo"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_signatureText">Signature Text</label>
+          <input
+            type="text"
+            class="form-control"
+            name="signatureText"
+            id="field_signatureText"
+            data-cy="signatureText"
+            formControlName="signatureText"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_signatureImage">Signature Image</label>
+          <div>
+            @if (editForm.get('signatureImage')!.value) {
+              <img
+                [src]="'data:' + editForm.get('signatureImageContentType')!.value + ';base64,' + editForm.get('signatureImage')!.value"
+                style="max-height: 100px"
+                alt="subEmail image"
+              />
+            }
+            @if (editForm.get('signatureImage')!.value) {
+              <div class="form-text text-danger clearfix">
+                <span class="pull-start"
+                  >{{ editForm.get('signatureImageContentType')!.value }}, {{ byteSize(editForm.get('signatureImage')!.value!) }}</span
+                >
+                <button
+                  type="button"
+                  (click)="clearInputImage('signatureImage', 'signatureImageContentType', 'file_signatureImage')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input
+              type="file"
+              id="file_signatureImage"
+              data-cy="signatureImage"
+              (change)="setFileData($event, 'signatureImage', true)"
+              accept="image/*"
+            />
+          </div>
+          <input
+            type="hidden"
+            class="form-control"
+            name="signatureImage"
+            id="field_signatureImage"
+            data-cy="signatureImage"
+            formControlName="signatureImage"
+          />
+          <input
+            type="hidden"
+            class="form-control"
+            name="signatureImageContentType"
+            id="field_signatureImageContentType"
+            formControlName="signatureImageContentType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_subEmailEmail">Sub Email Email</label>
+          <select
+            class="form-control"
+            id="field_subEmailEmail"
+            data-cy="subEmailEmail"
+            name="subEmailEmail"
+            formControlName="subEmailEmail"
+            [compareWith]="compareEmail"
+          >
+            <option [ngValue]="null"></option>
+            @for (emailOption of emailsSharedCollection; track $index) {
+              <option [ngValue]="emailOption">{{ emailOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email">Email</label>
+          <select class="form-control" id="field_email" data-cy="email" name="email" formControlName="email" [compareWith]="compareEmail">
+            <option [ngValue]="null"></option>
+            @for (emailOption of emailsSharedCollection; track $index) {
+              <option [ngValue]="emailOption">{{ emailOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

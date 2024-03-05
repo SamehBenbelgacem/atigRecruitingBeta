@@ -9,7 +9,6 @@ import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import MainComponent from './layouts/main/main.component';
-import { TrackerService } from './core/tracker/tracker.service';
 
 @Component({
   selector: 'jhi-app',
@@ -21,13 +20,7 @@ import { TrackerService } from './core/tracker/tracker.service';
   ],
 })
 export default class AppComponent {
-  constructor(
-    applicationConfigService: ApplicationConfigService,
-    iconLibrary: FaIconLibrary,
-    trackerService: TrackerService,
-    dpConfig: NgbDatepickerConfig,
-  ) {
-    trackerService.setup();
+  constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);

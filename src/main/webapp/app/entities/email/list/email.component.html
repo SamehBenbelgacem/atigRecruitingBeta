@@ -1,0 +1,288 @@
+<div>
+  <h2 id="page-heading" data-cy="EmailHeading">
+    <span>Emails</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-email"
+        [routerLink]="['/email/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Email</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (emails?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Emails found</span>
+    </div>
+  }
+
+  @if (emails && emails.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="from">
+              <div class="d-flex">
+                <span>From</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="recipients">
+              <div class="d-flex">
+                <span>Recipients</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="subject">
+              <div class="d-flex">
+                <span>Subject</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="text">
+              <div class="d-flex">
+                <span>Text</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span>Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="date">
+              <div class="d-flex">
+                <span>Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="snoozedTo">
+              <div class="d-flex">
+                <span>Snoozed To</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="folder">
+              <div class="d-flex">
+                <span>Folder</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="signatureText">
+              <div class="d-flex">
+                <span>Signature Text</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="signatureImage">
+              <div class="d-flex">
+                <span>Signature Image</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="emailEmailcredentials.id">
+              <div class="d-flex">
+                <span>Email Emailcredentials</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="emailCandidate.id">
+              <div class="d-flex">
+                <span>Email Candidate</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="emailCompany.id">
+              <div class="d-flex">
+                <span>Email Company</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="candidate.id">
+              <div class="d-flex">
+                <span>Candidate</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="company.id">
+              <div class="d-flex">
+                <span>Company</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="emailcredentials.id">
+              <div class="d-flex">
+                <span>Emailcredentials</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (email of emails; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/email', email.id, 'view']">{{ email.id }}</a>
+              </td>
+              <td>{{ email.from }}</td>
+              <td>{{ email.recipients }}</td>
+              <td>{{ email.subject }}</td>
+              <td>{{ email.text }}</td>
+              <td>{{ email.type }}</td>
+              <td>{{ email.date | formatMediumDatetime }}</td>
+              <td>{{ email.snoozedTo | formatMediumDatetime }}</td>
+              <td>{{ email.folder }}</td>
+              <td>{{ email.signatureText }}</td>
+              <td>
+                @if (email.signatureImage) {
+                  <a (click)="openFile(email.signatureImage, email.signatureImageContentType)">
+                    <img
+                      [src]="'data:' + email.signatureImageContentType + ';base64,' + email.signatureImage"
+                      style="max-height: 30px"
+                      alt="email image"
+                    />
+                  </a>
+                  <span>{{ email.signatureImageContentType }}, {{ byteSize(email.signatureImage) }}</span>
+                }
+              </td>
+              <td>
+                @if (email.emailEmailcredentials) {
+                  <div>
+                    <a [routerLink]="['/emailcredentials', email.emailEmailcredentials.id, 'view']">{{ email.emailEmailcredentials.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (email.emailCandidate) {
+                  <div>
+                    <a [routerLink]="['/candidate', email.emailCandidate.id, 'view']">{{ email.emailCandidate.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (email.emailCompany) {
+                  <div>
+                    <a [routerLink]="['/company', email.emailCompany.id, 'view']">{{ email.emailCompany.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (email.candidate) {
+                  <div>
+                    <a [routerLink]="['/candidate', email.candidate.id, 'view']">{{ email.candidate.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (email.company) {
+                  <div>
+                    <a [routerLink]="['/company', email.company.id, 'view']">{{ email.company.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (email.emailcredentials) {
+                  <div>
+                    <a [routerLink]="['/emailcredentials', email.emailcredentials.id, 'view']">{{ email.emailcredentials.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/object-containing-file']"
+                    [queryParams]="{ 'filter[emailId.in]': email.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Object Containing File</span>
+                  </button>
+                  <button
+                    type="submit"
+                    [routerLink]="['/sub-email']"
+                    [queryParams]="{ 'filter[emailId.in]': email.id }"
+                    class="btn btn-info btn-sm"
+                    data-cy="filterOtherEntityButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Show Sub Email</span>
+                  </button>
+                  <a [routerLink]="['/email', email.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/email', email.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(email)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (emails && emails.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

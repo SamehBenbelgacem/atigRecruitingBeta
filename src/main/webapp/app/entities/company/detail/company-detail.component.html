@@ -1,0 +1,146 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (company) {
+      <div>
+        <h2 data-cy="companyDetailsHeading"><span>Company</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ company.id }}</span>
+          </dd>
+          <dt><span>Name</span></dt>
+          <dd>
+            <span>{{ company.name }}</span>
+          </dd>
+          <dt><span>Speciality</span></dt>
+          <dd>
+            <span>{{ company.speciality }}</span>
+          </dd>
+          <dt><span>Logo</span></dt>
+          <dd>
+            @if (company.logo) {
+              <div>
+                <a (click)="openFile(company.logo, company.logoContentType)">
+                  <img [src]="'data:' + company.logoContentType + ';base64,' + company.logo" style="max-width: 100%" alt="company image" />
+                </a>
+                {{ company.logoContentType }}, {{ byteSize(company.logo) }}
+              </div>
+            }
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ company.description }}</span>
+          </dd>
+          <dt><span>Website</span></dt>
+          <dd>
+            <span>{{ company.website }}</span>
+          </dd>
+          <dt><span>Location</span></dt>
+          <dd>
+            <span>{{ company.location }}</span>
+          </dd>
+          <dt><span>Info Email</span></dt>
+          <dd>
+            <span>{{ company.infoEmail }}</span>
+          </dd>
+          <dt><span>Phone</span></dt>
+          <dd>
+            <span>{{ company.phone }}</span>
+          </dd>
+          <dt><span>First Contact Date</span></dt>
+          <dd>
+            <span>{{ company.firstContactDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Company Category</span></dt>
+          <dd>
+            @if (company.companyCategory) {
+              <div>
+                <a [routerLink]="['/category', company.companyCategory.id, 'view']">{{ company.companyCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Company Sub Category</span></dt>
+          <dd>
+            @if (company.companySubCategory) {
+              <div>
+                <a [routerLink]="['/sub-category', company.companySubCategory.id, 'view']">{{ company.companySubCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Company Process</span></dt>
+          <dd>
+            @if (company.companyProcess) {
+              <div>
+                <a [routerLink]="['/process', company.companyProcess.id, 'view']">{{ company.companyProcess.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Company Process Step</span></dt>
+          <dd>
+            @if (company.companyProcessStep) {
+              <div>
+                <a [routerLink]="['/process-step', company.companyProcessStep.id, 'view']">{{ company.companyProcessStep.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Tags</span></dt>
+          <dd>
+            @for (tags of company.tags; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/tag', tags.id, 'view']">{{ tags.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span>Category</span></dt>
+          <dd>
+            @if (company.category) {
+              <div>
+                <a [routerLink]="['/category', company.category.id, 'view']">{{ company.category.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Sub Category</span></dt>
+          <dd>
+            @if (company.subCategory) {
+              <div>
+                <a [routerLink]="['/sub-category', company.subCategory.id, 'view']">{{ company.subCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Process</span></dt>
+          <dd>
+            @if (company.process) {
+              <div>
+                <a [routerLink]="['/process', company.process.id, 'view']">{{ company.process.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Process Step</span></dt>
+          <dd>
+            @if (company.processStep) {
+              <div>
+                <a [routerLink]="['/process-step', company.processStep.id, 'view']">{{ company.processStep.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/company', company.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

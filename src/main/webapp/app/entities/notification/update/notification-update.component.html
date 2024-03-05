@@ -1,0 +1,161 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-notification-heading" data-cy="NotificationCreateUpdateHeading">Create or edit a Notification</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_message">Message</label>
+          <input type="text" class="form-control" name="message" id="field_message" data-cy="message" formControlName="message" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_callUpDate">Call Up Date</label>
+          <div class="d-flex">
+            <input
+              id="field_callUpDate"
+              data-cy="callUpDate"
+              type="datetime-local"
+              class="form-control"
+              name="callUpDate"
+              formControlName="callUpDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_readStatus">Read Status</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="readStatus"
+            id="field_readStatus"
+            data-cy="readStatus"
+            formControlName="readStatus"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_attention">Attention</label>
+          <select class="form-control" name="attention" formControlName="attention" id="field_attention" data-cy="attention">
+            <option [ngValue]="null"></option>
+            @for (enumPriority of enumPriorityValues; track $index) {
+              <option [value]="enumPriority">{{ enumPriority }}</option>
+            }
+          </select>
+          @if (editForm.get('attention')!.invalid && (editForm.get('attention')!.dirty || editForm.get('attention')!.touched)) {
+            <div>
+              @if (editForm.get('attention')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null"></option>
+            @for (enumNotificationType of enumNotificationTypeValues; track $index) {
+              <option [value]="enumNotificationType">{{ enumNotificationType }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notificationCandidate">Notification Candidate</label>
+          <select
+            class="form-control"
+            id="field_notificationCandidate"
+            data-cy="notificationCandidate"
+            name="notificationCandidate"
+            formControlName="notificationCandidate"
+            [compareWith]="compareCandidate"
+          >
+            <option [ngValue]="null"></option>
+            @for (candidateOption of candidatesSharedCollection; track $index) {
+              <option [ngValue]="candidateOption">{{ candidateOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notificationCompany">Notification Company</label>
+          <select
+            class="form-control"
+            id="field_notificationCompany"
+            data-cy="notificationCompany"
+            name="notificationCompany"
+            formControlName="notificationCompany"
+            [compareWith]="compareCompany"
+          >
+            <option [ngValue]="null"></option>
+            @for (companyOption of companiesSharedCollection; track $index) {
+              <option [ngValue]="companyOption">{{ companyOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidate">Candidate</label>
+          <select
+            class="form-control"
+            id="field_candidate"
+            data-cy="candidate"
+            name="candidate"
+            formControlName="candidate"
+            [compareWith]="compareCandidate"
+          >
+            <option [ngValue]="null"></option>
+            @for (candidateOption of candidatesSharedCollection; track $index) {
+              <option [ngValue]="candidateOption">{{ candidateOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_company">Company</label>
+          <select
+            class="form-control"
+            id="field_company"
+            data-cy="company"
+            name="company"
+            formControlName="company"
+            [compareWith]="compareCompany"
+          >
+            <option [ngValue]="null"></option>
+            @for (companyOption of companiesSharedCollection; track $index) {
+              <option [ngValue]="companyOption">{{ companyOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

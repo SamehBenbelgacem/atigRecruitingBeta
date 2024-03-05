@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (desider) {
+      <div>
+        <h2 data-cy="desiderDetailsHeading"><span>Desider</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ desider.id }}</span>
+          </dd>
+          <dt><span>Full Name</span></dt>
+          <dd>
+            <span>{{ desider.fullName }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ desider.email }}</span>
+          </dd>
+          <dt><span>Mobile</span></dt>
+          <dd>
+            <span>{{ desider.mobile }}</span>
+          </dd>
+          <dt><span>Role</span></dt>
+          <dd>
+            <span>{{ desider.role }}</span>
+          </dd>
+          <dt><span>Desider Company</span></dt>
+          <dd>
+            @if (desider.desiderCompany) {
+              <div>
+                <a [routerLink]="['/company', desider.desiderCompany.id, 'view']">{{ desider.desiderCompany.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Company</span></dt>
+          <dd>
+            @if (desider.company) {
+              <div>
+                <a [routerLink]="['/company', desider.company.id, 'view']">{{ desider.company.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/desider', desider.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

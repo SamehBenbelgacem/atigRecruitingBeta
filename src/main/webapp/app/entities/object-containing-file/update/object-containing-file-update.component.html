@@ -1,0 +1,147 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-object-containing-file-heading" data-cy="ObjectContainingFileCreateUpdateHeading">
+        Create or edit a Object Containing File
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_file">File</label>
+          <div>
+            @if (editForm.get('file')!.value) {
+              <div class="form-text text-danger clearfix">
+                <a class="pull-start" (click)="openFile(editForm.get('file')!.value!, editForm.get('fileContentType')!.value!)">Open</a
+                ><br />
+                <span class="pull-start">{{ editForm.get('fileContentType')!.value }}, {{ byteSize(editForm.get('file')!.value!) }}</span>
+                <button
+                  type="button"
+                  (click)="editForm.patchValue({ file: undefined, fileContentType: undefined })"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input type="file" id="file_file" data-cy="file" (change)="setFileData($event, 'file', false)" />
+          </div>
+          <input type="hidden" class="form-control" name="file" id="field_file" data-cy="file" formControlName="file" />
+          <input type="hidden" class="form-control" name="fileContentType" id="field_fileContentType" formControlName="fileContentType" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidateDocs">Candidate Docs</label>
+          <select
+            class="form-control"
+            id="field_candidateDocs"
+            data-cy="candidateDocs"
+            name="candidateDocs"
+            formControlName="candidateDocs"
+            [compareWith]="compareCandidateAdditionalInfos"
+          >
+            <option [ngValue]="null"></option>
+            @for (candidateAdditionalInfosOption of candidateAdditionalInfosSharedCollection; track $index) {
+              <option [ngValue]="candidateAdditionalInfosOption">{{ candidateAdditionalInfosOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_noteDocs">Note Docs</label>
+          <select
+            class="form-control"
+            id="field_noteDocs"
+            data-cy="noteDocs"
+            name="noteDocs"
+            formControlName="noteDocs"
+            [compareWith]="compareNote"
+          >
+            <option [ngValue]="null"></option>
+            @for (noteOption of notesSharedCollection; track $index) {
+              <option [ngValue]="noteOption">{{ noteOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_emailDocs">Email Docs</label>
+          <select
+            class="form-control"
+            id="field_emailDocs"
+            data-cy="emailDocs"
+            name="emailDocs"
+            formControlName="emailDocs"
+            [compareWith]="compareEmail"
+          >
+            <option [ngValue]="null"></option>
+            @for (emailOption of emailsSharedCollection; track $index) {
+              <option [ngValue]="emailOption">{{ emailOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidateAdditionalInfos">Candidate Additional Infos</label>
+          <select
+            class="form-control"
+            id="field_candidateAdditionalInfos"
+            data-cy="candidateAdditionalInfos"
+            name="candidateAdditionalInfos"
+            formControlName="candidateAdditionalInfos"
+            [compareWith]="compareCandidateAdditionalInfos"
+          >
+            <option [ngValue]="null"></option>
+            @for (candidateAdditionalInfosOption of candidateAdditionalInfosSharedCollection; track $index) {
+              <option [ngValue]="candidateAdditionalInfosOption">{{ candidateAdditionalInfosOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_note">Note</label>
+          <select class="form-control" id="field_note" data-cy="note" name="note" formControlName="note" [compareWith]="compareNote">
+            <option [ngValue]="null"></option>
+            @for (noteOption of notesSharedCollection; track $index) {
+              <option [ngValue]="noteOption">{{ noteOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email">Email</label>
+          <select class="form-control" id="field_email" data-cy="email" name="email" formControlName="email" [compareWith]="compareEmail">
+            <option [ngValue]="null"></option>
+            @for (emailOption of emailsSharedCollection; track $index) {
+              <option [ngValue]="emailOption">{{ emailOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
