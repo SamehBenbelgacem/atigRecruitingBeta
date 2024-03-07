@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { VERSION } from 'app/app.constants';
@@ -63,7 +62,15 @@ export default class NavbarComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  menuClicked(e: MouseEvent): void {
+    e.stopPropagation();
+  }
+
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  filteredMenuItems(NavbarItems: NavbarItem[]): NavbarItem[] {
+    return NavbarItems ? NavbarItems.filter(x => !x.roles || (x.roles && x.roles.includes(this.currentUser.role))) : [];
   }
 }
